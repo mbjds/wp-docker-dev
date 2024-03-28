@@ -1,0 +1,61 @@
+services:
+  db:
+    image: mariadb:latest
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=db
+      - MYSQL_PASSWORD=1234
+    expose:
+      - 3306
+      - 33060
+    ports:
+      - 3366:3306
+  wordpress:
+    image: wordpress
+    volumes:
+      - ./wp_data:/var/www/html
+    ports:
+      - 8080:80
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=db
+      - WORDPRESS_DB_PASSWORD=1234
+      - WORDPRESS_DB_NAME=db
+      - WORDPRESS_TABLE_PREFIX=dlaextremalnych_
+    depends_on:
+      - db
+  wpcli:
+    container_name: wpcli
+    image: wordpress:cli
+    depends_on:
+      - db
+      - wordpress
+    volumes:
+      - ./wp_data:/var/www/html
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=db
+      - WORDPRESS_DB_PASSWORD=1234
+      - WORDPRESS_DB_NAME=db
+      - WORDPRESS_TABLE_PREFIX=dlaextremalnych_
+    command: tail -f /dev/null
+ 
+  phpmyadmin:  
+    image: phpmyadmin
+    ports:
+      - "8081:80" 
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: somewordpress
+    depends_on:
+      - db  
+volumes:
+  db_data:
+  wp_data:
