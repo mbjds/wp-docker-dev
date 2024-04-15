@@ -30,7 +30,7 @@ docker exec -it wpcli '/bin/bash'
 Out of box you get:
 
 
-**MariaDB** server in lastest version (on host anavaivle on port 3366)
+**MariaDB** server in lastest version (on host available on port 3366)
 
 **Wordpress** container with apache and php 8.2 (on port 8080)
 
@@ -38,6 +38,3 @@ Out of box you get:
 
 **WP CLI** container 
 
-**Client:** React, Redux, TailwindCSS
-
-**Server:** Node, Express
